@@ -1,8 +1,13 @@
-// Make sure Appwrite SDK is loaded
-const sdk = new Appwrite();
-sdk.setEndpoint('https://cloud.appwrite.io/v1') // Replace with your Appwrite endpoint
-   .setProject('676598330023135df7a0'); // Replace with your Appwrite project ID
+// Step 1: Instantiate Appwrite Client
+const client = new Appwrite.Client();
+const account = new Appwrite.Account(client);
 
+// Configure the client with your Appwrite endpoint and project ID
+client
+  .setEndpoint('https://cloud.appwrite.io/v1')  // Your Appwrite endpoint (e.g., https://cloud.appwrite.io/v1)
+  .setProject('676598330023135df7a0');                   // Your Appwrite project ID (found in the Appwrite console)
+
+// DOM Elements
 const phoneInput = document.getElementById('phone');
 const otpInput = document.getElementById('otp');
 const sendOtpButton = document.getElementById('send-otp');
@@ -12,7 +17,7 @@ const otpForm = document.getElementById('otp-form');
 const errorMessage = document.getElementById('error-message');
 const successMessage = document.getElementById('success-message');
 
-// Function to send OTP
+// Step 2: Send OTP when the "Send OTP" button is clicked
 sendOtpButton.addEventListener('click', async () => {
   const phoneNumber = phoneInput.value.trim();
 
@@ -22,8 +27,8 @@ sendOtpButton.addEventListener('click', async () => {
   }
 
   try {
-    // Send OTP to phone number
-    await sdk.account.createPhoneSession(phoneNumber);
+    // Send OTP to phone number via Appwrite's phone authentication
+    await account.createPhoneSession(phoneNumber);
     
     phoneForm.style.display = 'none';
     otpForm.style.display = 'block';
@@ -34,7 +39,7 @@ sendOtpButton.addEventListener('click', async () => {
   }
 });
 
-// Function to verify OTP
+// Step 3: Verify OTP when the "Verify OTP" button is clicked
 verifyOtpButton.addEventListener('click', async () => {
   const otp = otpInput.value.trim();
 
@@ -44,8 +49,8 @@ verifyOtpButton.addEventListener('click', async () => {
   }
 
   try {
-    // Verify OTP
-    await sdk.account.updatePhoneSession(phoneInput.value.trim(), otp);
+    // Verify OTP entered by the user
+    await account.updatePhoneSession(phoneInput.value.trim(), otp);
 
     otpForm.style.display = 'none';
     successMessage.style.display = 'block';
