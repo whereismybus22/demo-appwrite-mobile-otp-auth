@@ -1,60 +1,64 @@
-// Initialize the Appwrite SDK
+// Appwrite SDK configuration
 const sdk = new Appwrite();
+sdk.setEndpoint('https://cloud.appwrite.io/v1') // Replace with your Appwrite endpoint
+   .setProject('676598330023135df7a0'); // Replace with your Appwrite project ID
 
-// Initialize the client
-const client = new sdk.Client();
-client
-    .setEndpoint('https://cloud.appwrite.io/v1') // Replace with your Appwrite endpoint
-    .setProject('676598330023135df7a0');  // Replace with your Appwrite Project ID
+const phoneInput = document.getElementById('phone');
+const otpInput = document.getElementById('otp');
+const sendOtpButton = document.getElementById('send-otp');
+const verifyOtpButton = document.getElementById('verify-otp');
+const phoneForm = document.getElementById('phone-form');
+const otpForm = document.getElementById('otp-form');
+const errorMessage = document.getElementById('error-message');
+const successMessage = document.getElementById('success-message');
 
-const account = new sdk.Account(client);
-
-// Variables to reference UI elements
-const phoneInput = document.getElementById('phone-input');
-const sendOtpButton = document.getElementById('send-otp-btn');
-const otpContainer = document.getElementById('otp-container');
-const otpInput = document.getElementById('otp-input');
-const verifyOtpButton = document.getElementById('verify-otp-btn');
-
-let phoneId = null;
-
-// Event listener for sending OTP
+// Function to send OTP
 sendOtpButton.addEventListener('click', async () => {
-    const phone = phoneInput.value;
+  const phoneNumber = phoneInput.value.trim();
 
-    if (!phone) {
-        alert("Please enter a valid phone number.");
-        return;
-    }
+  if (!phoneNumber) {
+    showError('Please enter a valid phone number.');
+    return;
+  }
 
-    try {
-        // Request OTP for phone number
-        const response = await account.createPhoneSession(phone);
-        phoneId = response.id; // Save the phone session ID for verification
-        otpContainer.style.display = 'block'; // Show OTP input after OTP is sent
-        alert('OTP has been sent to your phone.');
-    } catch (error) {
-        console.error('Error sending OTP:', error);
-        alert('There was an error sending the OTP. Please try again.');
-    }
+  try {
+    // Send OTP to phone number
+    await sdk.account.createPhoneSession(phoneNumber);
+    
+    phoneForm.style.display = 'none';
+    otpForm.style.display = 'block';
+    showError(''); // Clear any previous error messages
+  } catch (error) {
+    showError('Failed to send OTP. Please try again.');
+    console.error(error);
+  }
 });
 
-// Event listener for verifying OTP
+// Function to verify OTP
 verifyOtpButton.addEventListener('click', async () => {
-    const otp = otpInput.value;
+  const otp = otpInput.value.trim();
 
-    if (!otp) {
-        alert("Please enter the OTP.");
-        return;
-    }
+  if (!otp) {
+    showError('Please enter the OTP.');
+    return;
+  }
 
-    try {
-        // Verify OTP and complete login
-        const session = await account.updatePhoneSession(phoneId, otp);
-        alert('OTP verified successfully! You are logged in.');
-        // You can redirect the user to the dashboard or home page after successful login
-    } catch (error) {
-        console.error('Error verifying OTP:', error);
-        alert('Invalid OTP. Please try again.');
-    }
+  try {
+    // Verify OTP
+    await sdk.account.updatePhoneSession(phoneInput.value.trim(), otp);
+
+    otpForm.style.display = 'none';
+    successMessage.style.display = 'block';
+    successMessage.textContent = 'OTP Verified successfully! You are now logged in.';
+    showError(''); // Clear any previous error messages
+  } catch (error) {
+    showError('Invalid OTP. Please try again.');
+    console.error(error);
+  }
 });
+
+// Function to show error message
+function showError(message) {
+  errorMessage.textContent = message;
+  errorMessage.style.display = message ? 'block' : 'none';
+}

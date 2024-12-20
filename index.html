@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login with OTP</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile OTP Authentication</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/appwrite@9.0.0/dist/appwrite.min.js"></script>
 </head>
 <body>
-    <div id="login-container">
-        <h1>Login with OTP</h1>
-        <input type="text" id="phone-input" placeholder="Enter your phone number" />
-        <button id="send-otp-btn">Send OTP</button>
 
-        <div id="otp-container" style="display: none;">
-            <input type="text" id="otp-input" placeholder="Enter OTP" />
-            <button id="verify-otp-btn">Verify OTP</button>
-        </div>
+  <div class="auth-container">
+    <h2>Login with OTP</h2>
+
+    <div id="phone-form">
+      <label for="phone">Enter your phone number</label>
+      <input type="text" id="phone" placeholder="+1 234 567 890" required />
+      <button id="send-otp">Send OTP</button>
     </div>
 
-    <!-- Ensure that the Appwrite SDK is loaded correctly -->
-    <script src="https://cdn.jsdelivr.net/npm/appwrite@10.0.0"></script> <!-- Correct CDN URL -->
-    <script src="app.js"></script>
+    <div id="otp-form" style="display: none;">
+      <label for="otp">Enter OTP</label>
+      <input type="text" id="otp" maxlength="6" placeholder="123456" required />
+      <button id="verify-otp">Verify OTP</button>
+    </div>
+
+    <div id="error-message" class="error" style="display: none;"></div>
+    <div id="success-message" class="success" style="display: none;"></div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
