@@ -1,7 +1,7 @@
-// Appwrite SDK configuration
+// Make sure Appwrite SDK is loaded
 const sdk = new Appwrite();
-sdk.setEndpoint('https://cloud.appwrite.io/v1') // Replace with your Appwrite endpoint
-   .setProject('676598330023135df7a0'); // Replace with your Appwrite project ID
+sdk.setEndpoint('https://[YOUR_APPWRITE_ENDPOINT]') // Replace with your Appwrite endpoint
+   .setProject('[YOUR_PROJECT_ID]'); // Replace with your Appwrite project ID
 
 const phoneInput = document.getElementById('phone');
 const otpInput = document.getElementById('otp');
