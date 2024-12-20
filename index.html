@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with OTP</title>
+</head>
+<body>
+    <div id="login-container">
+        <h1>Login with OTP</h1>
+        <input type="text" id="phone-input" placeholder="Enter your phone number" />
+        <button id="send-otp-btn">Send OTP</button>
+
+        <div id="otp-container" style="display: none;">
+            <input type="text" id="otp-input" placeholder="Enter OTP" />
+            <button id="verify-otp-btn">Verify OTP</button>
+        </div>
+    </div>
+
+    <!-- Ensure that the Appwrite SDK is loaded correctly -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@10.0.0"></script> <!-- Correct CDN URL -->
+    <script src="app.js"></script>
+</body>
+</html>
